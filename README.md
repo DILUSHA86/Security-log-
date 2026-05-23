@@ -74,7 +74,55 @@ class AdaptiveHUD {
 const lunaHud = new AdaptiveHUD();
 // Example: High input frequency and rising errors trigger deep focus
 lunaHud.calculateFocusState(8.5, 0.4); 
- 
+ class PredictiveUIAlgorithm {
+    constructor() {
+        this.backendReady = tf.setBackend('webgl').then(() => {
+            console.log("WebGL Backend Active.");
+        });
+        // ... initialize model as before ...
+    }
+
+    async predictUserIntent(interactionVector) {
+        await this.backendReady; // Ensure backend is ready
+        const inputTensor = tf.tensor2d([interactionVector]);
+        const prediction = this.model.predict(inputTensor);
+        const probability = this.backendReady = tf.setBackend('webgl').catch(() => 
+    tf.setBackend('wasm')
+).then(() => {
+    console.log("TensorFlow.js Backend Ready:", tf.getBackend());
+});prediction.dataSync()[0];const data = await prediction.data();
+const probability = data[0];this.model = await tf.loadLayersModel('localstorage://predictive-ui');import * as tf from '@tensorflow/tfjs';
+
+class PredictiveUIAlgorithm {
+    constructor() {
+        this.backendReady = tf.setBackend('webgl').catch(() => tf.setBackend('wasm')).then(() => {
+            console.log("TensorFlow.js Backend Ready:", tf.getBackend());
+        });
+
+        this.model = tf.sequential();
+        this.model.add(tf.layers.dense({ units: 8, inputShape: [3], activation: 'relu' }));
+        this.model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
+        this.model.compile({ optimizer: 'adam', loss: 'binaryCrossentropy' });
+    }
+
+    async predictUserIntent(interactionVector) {
+        await this.backendReady;
+        if (!Array.isArray(interactionVector) || interactionVector.length !== 3) {
+            throw new Error('interactionVector must be an array of length 3');
+        }
+        const inputTensor = tf.tensor2d([interactionVector]);
+        const prediction = this.model.predict(inputTensor);
+        const [probability] = await prediction.data(); // Async version
+        inputTensor.dispose();
+        prediction.dispose();
+        return probability;
+    }
+}
+        inputTensor.dispose();
+        prediction.dispose();
+        return probability;
+    }
+}
     return {
         activated: activation >= threshold,
         signalStrength: parseFloat(activation.toFixed(2))
